@@ -2,7 +2,7 @@ from django.db import models
 
 class Category(models.Model):
     """ Categories people fit into """
-    name = models.CharField(max_length=200)
+    name = models.CharField(max_length=200, unique=True)
 
     def __unicode__(self):
         """ How to print the category """
@@ -15,7 +15,7 @@ class Category(models.Model):
 class Person(models.Model):
     """ A person to be guessed """
     name = models.CharField(max_length=200)
-    short_name = models.CharField(max_length=50)
+    short_name = models.CharField(max_length=50, unique=True)
     category = models.ManyToManyField(Category)
     imageurl = models.URLField()
     verified = models.BooleanField()
@@ -30,7 +30,7 @@ class Person(models.Model):
 
 class Quote(models.Model):
     """ A quote to guess the owner of """
-    update_id = models.CharField(max_length=50)
+    update_id = models.CharField(max_length=50, unique=True)
     text = models.CharField(max_length=150)
     author = models.ForeignKey(Person)
     posted = models.DateTimeField()
