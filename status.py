@@ -3,6 +3,8 @@ import twitter.oauth
 import urllib
 import urllib2
 import simplejson as json
+import re
+from time import sleep
 
 token = '269695642-V4K1i9luupSSDjlppgjiHTEFXDMiWqXVdZtbYX4g'
 token_key = 'lP24WN5gfOkw55ain1f59rBOireovSvku9gRtUWs'
@@ -29,13 +31,12 @@ def update_categories():
                 }
         qstring = urllib.urlencode(data)
         API_URL = "/api/category/add/"
-        # request = urllib2.Request(_BASE_URL+API_URL, qstring)
-        # results = None
-        # try:
-        #     results = urllib2.urlopen(request).read()
-        # except:
-        #     print "Error"
-        # print results
+        request = urllib2.Request(_BASE_URL+API_URL, qstring)
+        results = None
+        try:
+            results = urllib2.urlopen(request).read()
+        except:
+            pass
     return listnames
 
 def get_list_members(lists):
@@ -62,6 +63,7 @@ def get_list_members(lists):
     return people
 
 def update_people(people):
+    newpeople = []
     for person in people:
         query = json.dumps(people[person])
         headers = {'X_REQUESTED_WITH' :'XMLHttpRequest',
@@ -69,15 +71,50 @@ def update_people(people):
         API_URL = "/api/person/add/"
         request = urllib2.Request(_BASE_URL+API_URL, query, headers)
         results = None
-        newpeople = []
         try:
             results = urllib2.urlopen(request).read()
-            newpeople += [people]
+            newpeople += [person]
         except:
             pass
+        # newpeople += [person]
+        # break
+        # sleep(1)
     return newpeople
 
+def goodtweet(tweets):
+    goodtweets = []
+    url = re.compile(r"[\w\d&]+\.[\w\d&]+\.[\w\d&]{0,3}[^\w\d]+")
+    mention = re.compile(r'\@[\w\d]+')
+    for tweet in tweets:
+        ### Working criteria!
+        if ((len(tweet['entities']['urls']) == 0) and
+            (len(tweet['entities']['user_mentions']) == 0) and
+            (tweet['in_reply_to_status_id'] is None) and
+            (url.search(tweet['text']) is None) and
+            (mention.search(tweet['text']) is None)):
+            goodtweets += [tweet]
+            # print tweet['text']
+    return goodtweets
+
+def update_statuses(person):
+    statlist = tw.statuses.user_timeline(screen_name=person, count=200, include_entities=1)
+    goodlist = goodtweet(statlist)
+    for stat in goodlist:
+        query = json.dumps(stat)
+        headers = {'X_REQUESTED_WITH' :'XMLHttpRequest',
+                   'ACCEPT': 'application/json, text/javascript, */*; q=0.01',}
+        API_URL = "/api/quote/add/"
+        request = urllib2.Request(_BASE_URL+API_URL, query, headers)
+        results = None
+        try:
+            results = urllib2.urlopen(request).read()
+        except:
+            pass
+    return len(goodlist)
+        
 lists = update_categories()
 list_data = get_list_members(lists)
 newpeople = update_people(list_data)
-print newpeople
+for person in newpeople:
+    updtd = update_statuses(person)
+    print "%s: sent %d tweets" %(person, updtd)

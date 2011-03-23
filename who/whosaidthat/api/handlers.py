@@ -1,9 +1,19 @@
 from piston.handler import BaseHandler
 from piston.utils import rc
-from puzzle.models import Category, Person
+from puzzle.models import Category, Person, Quote
 from django.db import IntegrityError
 from django.template.defaultfilters import slugify
 import simplejson as json
+import email.utils
+import datetime
+
+def timeconvert(timestr):
+    """Convert RFC 2822 defined time string into system timestamp"""
+    timestamp = None
+    timetuple = email.utils.parsedate_tz(timestr)
+    if timetuple is not None:
+        timestamp = email.utils.mktime_tz(timetuple)
+    return timestamp
 
 class CategoryHandler(BaseHandler):
    allowed_methods = ('GET', 'POST')
@@ -74,4 +84,25 @@ class PersonHandler(BaseHandler):
          cat_ref = Category.objects.filter(name=delcat)[0]
          person.category.remove(cat_ref)
       person.save()
+      return resp
+
+class QuoteHandler(BaseHandler):
+   allower_methods = ('GET', 'POST',)
+
+   def create(self, request):
+      ## This is the way to get JSON
+      data = json.loads(request.raw_post_data)
+      author = data['user']['screen_name']
+      person = Person.objects.filter(screenname=author)[0]
+      posttime = datetime.datetime.fromtimestamp(timeconvert(data['created_at']))
+      em = Quote(updateid=data['id'],
+                 text=data['text'],
+                 author=person,
+                 posted=posttime
+                 )
+      try:
+         em.save()
+         resp = rc.CREATED
+      except IntegrityError:
+         resp = rc.DUPLICATE_ENTRY
       return resp

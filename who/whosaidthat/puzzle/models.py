@@ -37,12 +37,12 @@ class Person(models.Model):
 
 class Quote(models.Model):
     """ A quote to guess the owner of """
-    update_id = models.CharField(max_length=50, unique=True)
-    text = models.CharField(max_length=150)
-    author = models.ForeignKey(Person)
-    posted = models.DateTimeField()
-    vote_up = models.IntegerField(default=0)
-    vote_down = models.IntegerField(default=0)
+    updateid = models.CharField(max_length=50, unique=True, default=0)
+    text = models.CharField(max_length=150, blank=True)
+    author = models.ForeignKey(Person, blank=True)
+    posted = models.DateTimeField(blank=True)
+    voteup = models.IntegerField(default=0)
+    votedown = models.IntegerField(default=0)
 
     def __unicode__(self):
         if len(self.text) > 15:
