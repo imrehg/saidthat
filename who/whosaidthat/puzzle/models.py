@@ -3,6 +3,9 @@ from django.db import models
 class Category(models.Model):
     """ Categories people fit into """
     name = models.CharField(max_length=200, unique=True)
+    slug = models.SlugField(default=['name'])
+    description = models.CharField(max_length=200, blank=True)
+    uri = models.CharField(max_length=200, default=True)
 
     def __unicode__(self):
         """ How to print the category """
