@@ -17,15 +17,19 @@ class Category(models.Model):
 
 class Person(models.Model):
     """ A person to be guessed """
-    name = models.CharField(max_length=200)
-    short_name = models.CharField(max_length=50, unique=True)
-    category = models.ManyToManyField(Category)
-    imageurl = models.URLField()
+    name = models.CharField(max_length=200, default=True)
+    screen_name = models.CharField(max_length=50, unique=True, default='-missing-')
+    description = models.CharField(max_length=200, default=True)
+    imageurl = models.URLField(default=True)
+    url = models.URLField(default=True)
     verified = models.BooleanField()
+    location = models.CharField(max_length=200, default=True)
+    twitter_id = models.CharField(max_length=200, default=True)
+    category = models.ManyToManyField(Category)
 
     def __unicode__(self):
         """ How to print the person """
-        return "%s (%s)" %(self.name, self.short_name)
+        return "%s (%s)" %(self.name, self.screen_name)
 
     class Meta:
         verbose_name = "person"
