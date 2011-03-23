@@ -11,7 +11,8 @@ token_key = 'lP24WN5gfOkw55ain1f59rBOireovSvku9gRtUWs'
 consumer_key = 'JHxS3cqx7hnS3RPQAXp6GQ'
 consumer_secret = 'yqR9NuaF3V3SbnRbewWZHy8StrlnvUQhJ80sI1U'
 
-_BASE_URL = "http://localhost:8000"
+# _BASE_URL = "http://localhost:8000"
+_BASE_URL = "http://who.saidth.at"
 
 tw = twitter.Twitter(auth=twitter.oauth.OAuth(token, token_key, consumer_key, consumer_secret))
 # newstat = tw.statuses.friends_timeline(include_entities='t', count=200)
