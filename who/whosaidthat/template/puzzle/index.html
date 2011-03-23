@@ -1,0 +1,16 @@
+
+{% if quote %}
+    <div>
+     <blockquote>{{ quote.text }}<blockquote>
+    </div>
+    <div>
+     <p><strong>{{ quote.author.name }}</strong></p>
+    </div>
+    {% for guess in guesses %}
+      <div>
+       <p>{{ guess.name }}</p>
+      </div>
+    {% endfor %}
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
