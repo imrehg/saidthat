@@ -10,7 +10,7 @@ def make_verified(modeladmin, request, queryset):
     make_verified.short_description = "Mark selected people as verified"
 
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ['name', 'screen_name']
+    list_display = ['name', 'screenname']
     ordering = ['name']
     actions = [make_verified]
 
