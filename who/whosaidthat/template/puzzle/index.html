@@ -1,16 +1,29 @@
-
+<html>
+<head>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $.getJSON("/p{{puzzle.id}}/?solve", function(data) {
+        solution = data['author'];
+        document.getElementById(solution).style.backgroundColor="yellow";
+    });
+  });
+</script>
+</head>
+<body>
 {% if quote %}
     <div>
      <blockquote>{{ quote.text }}<blockquote>
     </div>
-    <div>
-     <p><strong>{{ quote.author.name }}</strong></p>
-    </div>
     {% for guess in guesses %}
-      <div>
+      <div id={{guess.screenname}}>
        <p>{{ guess.name }}</p>
       </div>
     {% endfor %}
+    <div><em>{{ puzzle.id}}</em></div>
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
+
+</body>
+</html>

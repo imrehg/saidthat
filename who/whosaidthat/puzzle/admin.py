@@ -1,4 +1,4 @@
-from puzzle.models import Category, Person, Quote
+from puzzle.models import Category, Person, Quote, Puzzle
 from django.contrib import admin
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -17,5 +17,6 @@ class PersonAdmin(admin.ModelAdmin):
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Quote)
+admin.site.register(Puzzle)
 
 

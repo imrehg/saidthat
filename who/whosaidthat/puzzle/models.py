@@ -50,3 +50,19 @@ class Quote(models.Model):
         else:
             text = self.text
         return text
+
+class Puzzle(models.Model):
+    """ A puzzle to solve """
+    quote = models.ForeignKey(Quote, blank=True)
+    fakeauth0 = models.ForeignKey(Person, blank=True, related_name='+')
+    fakeauth1 = models.ForeignKey(Person, blank=True, related_name='+')
+    fakeauth2 = models.ForeignKey(Person, blank=True, related_name='+')
+    totalguess = models.IntegerField(default=0)
+    goodguess = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        text = self.quote.text
+        if len(text) > 30:
+            text = text[0:28] + "..."
+        text = self.quote.author.name + ":" + text
+        return text

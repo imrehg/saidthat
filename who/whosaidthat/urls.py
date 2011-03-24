@@ -16,6 +16,6 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
 
-    # Uncomment the next line to enable the admin:
     (r'^puzzle/', include('whosaidthat.puzzle.urls')),
+    (r'^p(\d*)/$', 'whosaidthat.puzzle.views.getpuzzle'),
 )
