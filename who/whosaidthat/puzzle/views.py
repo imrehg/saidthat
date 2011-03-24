@@ -3,6 +3,7 @@ from puzzle.models import Quote, Person, Puzzle
 from django.http import HttpResponse
 import random
 import simplejson as json
+from django.shortcuts import render_to_response
 
 def index(request):
     """ Create random puzzle """
@@ -35,15 +36,14 @@ def index(request):
     return HttpResponse(t.render(c))
 
 def showpuzzle(request, puzzle):
-    t = loader.get_template('puzzle/index.html')
     guesses = [puzzle.quote.author, puzzle.fakeauth0, puzzle.fakeauth1, puzzle.fakeauth2]
     random.shuffle(guesses)
-    c = RequestContext(request, {
+    data_dict = {
         'quote': puzzle.quote,
         'guesses': guesses,
         'puzzle': puzzle,
-    })
-    return HttpResponse(t.render(c))
+    }
+    return render_to_response('puzzle/index.html', data_dict, context_instance=RequestContext(request))
 
 def getpuzzle(request, number):
     """ Show puzzle or solution """
