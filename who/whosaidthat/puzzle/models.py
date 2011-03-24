@@ -66,3 +66,7 @@ class Puzzle(models.Model):
             text = text[0:28] + "..."
         text = self.quote.author.name + ":" + text
         return text
+
+    class Meta:
+        verbose_name = "puzzle"
+        verbose_name_plural = "puzzles"

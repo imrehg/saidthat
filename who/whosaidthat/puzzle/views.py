@@ -27,7 +27,7 @@ def index(request):
                        )
     newpuzzle.save()
     t = loader.get_template('puzzle/index.html')
-    c = RequestContext({
+    c = Context({
         'quote': thisquote,
         'guesses': guesses,
         'puzzle': newpuzzle,
