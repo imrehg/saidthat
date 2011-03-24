@@ -33,7 +33,7 @@ def showpuzzle(request, puzzle):
 
     limit = 160
     header = "Who said:"
-    puzzle_url = "http://who.saidth.at"+request.get_full_path()
+    puzzle_url = "http://who.saidth.at/p%d" %(puzzle.id)
     ballast = len(header)+40
     text = puzzle.quote.text
     if len(text)+ballast > limit:
