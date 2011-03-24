@@ -1,4 +1,4 @@
-from django.template import Context, loader
+from django.template import Context, RequestContext, loader
 from puzzle.models import Quote, Person, Puzzle
 from django.http import HttpResponse
 import random
@@ -27,18 +27,18 @@ def index(request):
                        )
     newpuzzle.save()
     t = loader.get_template('puzzle/index.html')
-    c = Context({
+    c = RequestContext({
         'quote': thisquote,
         'guesses': guesses,
         'puzzle': newpuzzle,
     })
     return HttpResponse(t.render(c))
 
-def showpuzzle(puzzle):
+def showpuzzle(request, puzzle):
     t = loader.get_template('puzzle/index.html')
     guesses = [puzzle.quote.author, puzzle.fakeauth0, puzzle.fakeauth1, puzzle.fakeauth2]
     random.shuffle(guesses)
-    c = Context({
+    c = RequestContext(request, {
         'quote': puzzle.quote,
         'guesses': guesses,
         'puzzle': puzzle,
@@ -61,6 +61,6 @@ def getpuzzle(request, number):
         puzzlenum = number
         puzz = Puzzle.objects.filter(id=puzzlenum)
         if len(puzz) > 0:
-            return showpuzzle(puzz[0])
+            return showpuzzle(request, puzz[0])
         else:
             return HttpResponse("No such puzzle, dummy...")

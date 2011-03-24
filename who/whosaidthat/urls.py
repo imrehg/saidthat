@@ -18,4 +18,5 @@ urlpatterns = patterns('',
 
     (r'^puzzle/', include('whosaidthat.puzzle.urls')),
     (r'^p(\d*)/$', 'whosaidthat.puzzle.views.getpuzzle'),
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve',{'document_root': '/home/dotcloud/current/static/'}),
 )

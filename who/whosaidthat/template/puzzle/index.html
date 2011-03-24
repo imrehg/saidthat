@@ -1,6 +1,7 @@
 <html>
 <head>
-<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/puzzle.css" /> 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 <script type="text/javascript">
   $(document).ready(function() {
     $.getJSON("/p{{puzzle.id}}/?solve", function(data) {
@@ -17,7 +18,11 @@
     </div>
     {% for guess in guesses %}
       <div id={{guess.screenname}}>
-       <p>{{ guess.name }}</p>
+       <img src="https://api.twitter.com/1/users/profile_image/{{ guess.screenname }}?size=bigger">
+       <p>
+	 <div class=name>{{ guess.name }}</div><br><em>{{ guess.description }}</em><br/>
+	 <a href="http://twitter.com/#!/{{ guess.screenname}}" target=_blank>See profile on Twitter</a>
+       </p>
       </div>
     {% endfor %}
     <div><em>{{ puzzle.id}}</em></div>
