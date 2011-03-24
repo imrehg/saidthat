@@ -31,9 +31,9 @@ def showpuzzle(request, puzzle):
     random.shuffle(guesses)
 
     limit = 160
-    header = "Who said this? "
+    header = "Who said:"
     puzzle_url = "http://who.saidth.at"+request.get_full_path()
-    ballast = len(header)+30
+    ballast = len(header)+40
     text = puzzle.quote.text
     if len(text)+ballast > limit:
         text = text[0:-(ballast+3)]+'...'
