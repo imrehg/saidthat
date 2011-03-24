@@ -1,45 +1,95 @@
 <html>
 <head>
+<title>Who Said That?</title>
 <link rel="stylesheet" type="text/css" href="/static/puzzle.css" /> 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 <script type="text/javascript">
-  $(document).ready(function() {
-    $.getJSON("/p{{puzzle.id}}/?solve", function(data) {
-        solution = data['author'];
-        document.getElementById(solution).style.backgroundColor="yellow";
+  var guessed = false;
+
+  function takeGuess(obj) {
+     <!-- Only guess once -->
+     if (guessed == false) {
+       guessed = true;
+       $(".col1").css("opacity", '0.2');
+       $(".col1").css("-webkit-transition", "opacity 1.5s ease 0s")
+       $(".col1").css("-moz-transition", "opacity 1.5s ease 0s");
+       $(".col1").css("-o-transition", "opacity 1.5s ease 0s");
+       $(".col1").css("transition", "opacity 1.5s ease 0s");
+       getSolution(obj.id);
+     }
+  }
+
+  function getSolution(guess) {
+     $.getJSON("/p{{puzzle.id}}/?solve", function(data) {
+     var solution = data['author'];
+     var sol_id = "#"+solution;
+     $(sol_id).css("opacity", "1.0");
+
+     if (!sessionStorage.guessCounter) {
+        sessionStorage.setItem('guessCounter',0);
+        sessionStorage.setItem('goodGuessCounter',0);
+     }
+     sessionStorage.setItem('guessCounter',parseInt(sessionStorage.guessCounter)+1);
+
+     var good = (solution == guess);
+     if (good) {
+        sessionStorage.setItem('goodGuessCounter',parseInt(sessionStorage.goodGuessCounter)+1);
+     }
+     var results = sessionStorage.goodGuessCounter + " out of " + sessionStorage.guessCounter + " so far";
+     document.getElementById('results').innerHTML = results;
     });
-  });
+     $("#nextpuzzle").css("visibility", "visible");
+     $("#shareme").css("visibility", "visible");
+     $(".profilelink").css("visibility", "visible");
+  }
+
 </script>
 <script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
 </head>
 <body>
 
+{% if quote %}
+
 <div>
-   <a href="http://twitter.com/share" class="twitter-share-button"
-      data-url="{{ puzzle_url }}"
-      data-text="{{ puzzle_share_text }}"
-      data-related="said_that:Who Said That?"
-      data-via="said_that"
-      data-count="horizontal">Tweet</a>
+  <blockquote class="triangle-border">
+   <span id="quote">{{ quote.text }}</quote>
+  </blockquote>
+  <p>Who said that?</p>
 </div>
 
-{% if quote %}
-    <div>
-     <blockquote>{{ quote.text }}<blockquote>
-    </div>
+<div id="container1">
     {% for guess in guesses %}
-      <div id={{guess.screenname}}>
-       <img src="https://api.twitter.com/1/users/profile_image/{{ guess.screenname }}?size=bigger">
-       <p>
-	 <div class=name>{{ guess.name }}</div><br><em>{{ guess.description }}</em><br/>
-	 <a href="http://twitter.com/#!/{{ guess.screenname}}" target=_blank>See profile on Twitter</a>
-       </p>
+      <div id={{guess.screenname}} class="col1" onclick="takeGuess(this)">
+	<div class="guesscontent"><center>
+	  <img src="https://api.twitter.com/1/users/profile_image/{{ guess.screenname }}?size=bigger" width="120px">
+	  <p>
+	    <div class=name>{{ guess.name }}</div><br><span class="describe">{{ guess.description }}</span><br/>
+	    <a href="http://twitter.com/#!/{{ guess.screenname}}" target=_blank class="profilelink">profile on Twitter</a>
+	  </p>
+	  </center>
+	</div>
       </div>
     {% endfor %}
-    <div><em>{{ puzzle.id}}</em></div>
+</div>
+
+<center>
+  <div id="results">&nbsp;</div>
+
+  <div id="buttons">
+    <a href="/puzzle/" id="nextpuzzle" class="button green">Next quote</a>
+    <a href="http://twitter.com/share?{{ share_me }}" id="shareme" class="button blue" target="_blank">Share quote on Twitter</a> 
+  </div>
+
+</center>
+
+
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
 
+<div class="footer" align="center">
+created by <a href="http://twitter.com/#!/imrehg" target=_blank >Greg</a>
+on <a href="http://www.dotcloud.com" target=_blank >DotCloud</a>
+</div>
 </body>
 </html>

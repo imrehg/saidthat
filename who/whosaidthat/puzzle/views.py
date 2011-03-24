@@ -4,6 +4,7 @@ from django.http import HttpResponse
 import random
 import simplejson as json
 from django.shortcuts import render_to_response
+import urllib
 
 def index(request):
     """ Create random puzzle """
@@ -37,7 +38,14 @@ def showpuzzle(request, puzzle):
     text = puzzle.quote.text
     if len(text)+ballast > limit:
         text = text[0:-(ballast+3)]+'...'
-    puzzle_share_text = '%s "%s"' %(header, text)
+    puzzle_share_text = '%s "%s"?' %(header, text)
+    sharedict = { 'url': puzzle_url,
+                  'via': "said_that",
+                  'text': puzzle_share_text,
+                  'related': "said_that",
+                  }
+    ## Need .encode because there's unicode parts in status updates to be handled
+    share_string = urllib.urlencode(dict([k, v.encode('utf-8')] for k, v in sharedict.items()))
 
     data_dict = {
         'quote': puzzle.quote,
@@ -45,6 +53,7 @@ def showpuzzle(request, puzzle):
         'puzzle': puzzle,
         'puzzle_share_text': puzzle_share_text,
         'puzzle_url': puzzle_url,
+        'share_me': share_string,
     }
     return render_to_response('puzzle/index.html', data_dict, context_instance=RequestContext(request))
 
@@ -66,4 +75,4 @@ def getpuzzle(request, number):
         if len(puzz) > 0:
             return showpuzzle(request, puzz[0])
         else:
-            return HttpResponse("No such puzzle, dummy...")
+            return index(request)
