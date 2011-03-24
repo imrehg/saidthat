@@ -10,8 +10,8 @@ if TESTENV:
     DEBUG = True
     TEMPLATE_DEBUG = DEBUG
 else:
-    DEBUG = TEMPLATE_DEBUG = True
-    # DEBUG = TEMPLATE_DEBUG = False
+    # DEBUG = TEMPLATE_DEBUG = True
+    DEBUG = TEMPLATE_DEBUG = False
 
 ADMINS = (
     ('Gergely Imreh', 'imrehg@gmail.com'),
