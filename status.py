@@ -74,10 +74,10 @@ def update_people(people):
         results = None
         try:
             results = urllib2.urlopen(request).read()
-            newpeople += [person]
+            # newpeople += [person]
         except:
             pass
-        # newpeople += [person]
+        newpeople += [person]
         # break
         # sleep(1)
     return newpeople
