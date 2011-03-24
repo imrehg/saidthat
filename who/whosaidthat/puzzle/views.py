@@ -17,9 +17,6 @@ def index(request):
     authorid = thisquote.author.id
     idlist.remove(authorid)
     fakes = random.sample(idlist, 3)
-    guess = fakes + [thisquote.author.id]
-    random.shuffle(guess)
-    guesses = Person.objects.filter(id__in=guess)
     fakepeeps = Person.objects.filter(id__in=fakes)
     newpuzzle = Puzzle(quote=thisquote,
                        fakeauth0=fakepeeps[0],
@@ -27,21 +24,27 @@ def index(request):
                        fakeauth2=fakepeeps[2],
                        )
     newpuzzle.save()
-    t = loader.get_template('puzzle/index.html')
-    c = Context({
-        'quote': thisquote,
-        'guesses': guesses,
-        'puzzle': newpuzzle,
-    })
-    return HttpResponse(t.render(c))
+    return showpuzzle(request, newpuzzle)
 
 def showpuzzle(request, puzzle):
     guesses = [puzzle.quote.author, puzzle.fakeauth0, puzzle.fakeauth1, puzzle.fakeauth2]
     random.shuffle(guesses)
+
+    limit = 160
+    header = "Who said this? "
+    puzzle_url = "http://who.saidth.at"+request.get_full_path()
+    ballast = len(header)+30
+    text = puzzle.quote.text
+    if len(text)+ballast > limit:
+        text = text[0:-(ballast+3)]+'...'
+    puzzle_share_text = '%s "%s"' %(header, text)
+
     data_dict = {
         'quote': puzzle.quote,
         'guesses': guesses,
         'puzzle': puzzle,
+        'puzzle_share_text': puzzle_share_text,
+        'puzzle_url': puzzle_url,
     }
     return render_to_response('puzzle/index.html', data_dict, context_instance=RequestContext(request))
 
