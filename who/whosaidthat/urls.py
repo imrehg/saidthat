@@ -1,4 +1,5 @@
 from django.conf.urls.defaults import *
+from django.conf import settings
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -18,5 +19,6 @@ urlpatterns = patterns('',
 
     (r'^puzzle/', include('whosaidthat.puzzle.urls')),
     (r'^p(\d*)/$', 'whosaidthat.puzzle.views.getpuzzle'),
-    (r'^static/(?P<path>.*)$', 'django.views.static.serve',{'document_root': '/home/dotcloud/current/static/'}),
+    # (r'^static/(?P<path>.*)$', 'django.views.static.serve',{'document_root': '/home/dotcloud/current/static/'}),
+    (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_DOC_ROOT}),
 )

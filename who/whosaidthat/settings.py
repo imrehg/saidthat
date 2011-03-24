@@ -80,10 +80,9 @@ MEDIA_URL = ''
 # Examples: "http://foo.com/media/", "/media/".
 if TESTENV:
     ADMIN_MEDIA_PREFIX = '/media/'
-    STATIC_ROOT = "/home/greg/prog/saidthat/who/static"
-    STATIC_URL = "/static/"
 else:
     ADMIN_MEDIA_PREFIX = '/static/admin_media/'
+STATIC_DOC_ROOT = os.path.join(os.path.dirname(__file__), "static")
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'y6%o*oazu%!-67c*q_y*u+_lqlr8)*pc6qq_cnt0)d)=t7yepb'
