@@ -10,8 +10,18 @@
     });
   });
 </script>
+<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
 </head>
 <body>
+
+<div>
+   <a href="http://twitter.com/share" class="twitter-share-button"
+      data-url="{{ puzzle_url }}"
+      data-text="{{ puzzle_share_text }}"
+      data-related="said_that:Who Said That?"
+      data-count="horizontal">Tweet</a>
+</div>
+
 {% if quote %}
     <div>
      <blockquote>{{ quote.text }}<blockquote>
