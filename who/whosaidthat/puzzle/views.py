@@ -38,7 +38,7 @@ def showpuzzle(request, puzzle):
     text = puzzle.quote.text
     if len(text)+ballast > limit:
         text = text[0:-(ballast+3)]+'...'
-    puzzle_share_text = '%s "%s"?' %(header, text)
+    puzzle_share_text = '%s %s' %(header, text)
     sharedict = { 'url': puzzle_url,
                   'via': "said_that",
                   'text': puzzle_share_text,
