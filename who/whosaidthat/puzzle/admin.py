@@ -18,5 +18,3 @@ admin.site.register(Category, CategoryAdmin)
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Quote)
 admin.site.register(Puzzle)
-
-
