@@ -59,6 +59,9 @@ class Puzzle(models.Model):
     fakeauth2 = models.ForeignKey(Person, blank=True, related_name='+')
     totalguess = models.IntegerField(default=0)
     goodguess = models.IntegerField(default=0)
+    # This is NOT shown in the admin interface because of auto_now (?):
+    created = models.DateTimeField(null=True, auto_now=True)
+
 
     def __unicode__(self):
         text = self.quote.text
