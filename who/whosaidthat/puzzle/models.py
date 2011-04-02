@@ -45,8 +45,8 @@ class Quote(models.Model):
     votedown = models.IntegerField(default=0)
 
     def __unicode__(self):
-        if len(self.text) > 15:
-            text = self.text[0:13] + "..."
+        if len(self.text) > 60:
+            text = self.text[0:58] + "..."
         else:
             text = self.text
         return text
@@ -65,9 +65,9 @@ class Puzzle(models.Model):
 
     def __unicode__(self):
         text = self.quote.text
-        if len(text) > 30:
-            text = text[0:28] + "..."
-        text = self.quote.author.name + ":" + text
+        if len(text) > 60:
+            text = text[0:58] + "..."
+        text = self.quote.author.name + " : " + text
         return text
 
     class Meta:
