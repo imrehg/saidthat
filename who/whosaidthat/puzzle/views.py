@@ -31,13 +31,13 @@ def showpuzzle(request, puzzle):
     guesses = [puzzle.quote.author, puzzle.fakeauth0, puzzle.fakeauth1, puzzle.fakeauth2]
     random.shuffle(guesses)
 
-    limit = 160
+    limit = 140
     header = "Who said:"
     puzzle_url = "http://who.saidth.at/p%d" %(puzzle.id)
     ballast = len(header)+40
     text = puzzle.quote.text
     if len(text)+ballast > limit:
-        text = text[0:-(ballast+3)]+'...'
+        text = text[0:(limit-ballast-3)]+'...'
     puzzle_share_text = '%s %s' %(header, text)
     sharedict = { 'url': puzzle_url,
                   'via': "said_that",
