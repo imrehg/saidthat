@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     (r'^puzzle/', include('whosaidthat.puzzle.urls')),
     (r'^p(\d*)/$', 'whosaidthat.puzzle.views.getpuzzle'),
     # (r'^static/(?P<path>.*)$', 'django.views.static.serve',{'document_root': '/home/dotcloud/current/static/'}),
+    (r'^stats/', include('whosaidthat.stats.urls')),
     (r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.STATIC_DOC_ROOT}),
     (r'^$', 'whosaidthat.puzzle.views.index'),
 )

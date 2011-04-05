@@ -5,6 +5,8 @@ import random
 import simplejson as json
 from django.shortcuts import render_to_response
 import urllib
+import redis
+from django.conf import settings
 
 def index(request):
     """ Create random puzzle """
@@ -65,6 +67,17 @@ def getpuzzle(request, number):
         if len(puzz) > 0:
             ret = puzz[0].quote.author.screenname
             out = {'author': ret}
+
+            ## Update guess results database
+            redset = settings.REDIS
+            r = redis.Redis(host=redset['host'],
+                            port=redset['port'],
+                            password=redset['password'],
+                            )
+            r.zincrby("guess", ret, 1)
+            if request.GET.get('guess', None) == ret:
+                r.zincrby("goodguess", ret, 1)
+
             return HttpResponse(json.dumps(out))
         else:
             out = {'author': None}

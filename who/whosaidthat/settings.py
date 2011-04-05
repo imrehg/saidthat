@@ -30,6 +30,11 @@ if TESTENV:
             'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
         }
     }
+    REDIS = {
+        'host' : 'localhost',
+        'port' : 6379,
+        'password' : None,
+        }
 else:
     # Get host/port by running `dotcloud info saidthat.data`
     DATABASES = {
@@ -42,6 +47,11 @@ else:
             'PORT': '1994',                      # Set to empty string for default. Not used with sqlite3.
         }
     }
+    REDIS = {
+        'host' : 'ridinghood.saidthat.dotcloud.com',
+        'port' : 2196,
+        'password' : '7KvRYgUpeCoyiP|rUGNZ',
+        }
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

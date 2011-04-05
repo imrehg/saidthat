@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>Who Said That?</title>
+<link rel="stylesheet" type="text/css" href="/static/puzzle.css" /> 
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-12127510-5']);
+  _gaq.push(['_setDomainName', '.saidth.at']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+<body>
+
+<h2 id="pageheader">Statistics</h2>
+<div class="peoplestat">
+{% if bestguess %}
+      <div id={{ bestguess.person.screenname }} class="colstat">
+	<div class="guessheader">Best guessed</div>
+	<div class="percentage">{{ bestguess.hit }}%</div>
+	<div class="guesscontent"><center>
+	  <img src="https://api.twitter.com/1/users/profile_image/{{ bestguess.person.screenname }}?size=bigger" width="120px">
+	  <p>
+	    <div class=name>{{ bestguess.person.name }}</div><br><span class="describe">{{ bestguess.person.description }}</span><br/>
+	    <a href="http://twitter.com/#!/{{ bestguess.person.screenname}}" target=_blank class="profilelink-visible">profile on Twitter</a>
+	  </p>
+	</div>
+      </div>
+
+      <div id={{ worstguess.person.screenname }} class="colstat">
+	<div class="guessheader">Worst guessed</div>
+	<div class="percentage">{{ worstguess.hit }}%</div>
+	<div class="guesscontent"><center>
+	  <img src="https://api.twitter.com/1/users/profile_image/{{ worstguess.person.screenname }}?size=bigger" width="120px">
+	  <p>
+	    <div class=name>{{ worstguess.person.name }}</div><br><span class="describe">{{ worstguess.person.description }}</span><br/>
+	    <a href="http://twitter.com/#!/{{ worstguess.person.screenname}}" target=_blank class="profilelink-visible">profile on Twitter</a>
+	  </p>
+	</div>
+      </div>
+</div>
+{% else %}
+    <p>No statistics are available.</p>
+{% endif %}
+
+<div class="footer" align="center">
+created by <a href="http://twitter.com/#!/imrehg" target=_blank >Greg</a>
+on <a href="http://www.dotcloud.com" target=_blank >DotCloud</a>
+</div>
+</body>
+</html>

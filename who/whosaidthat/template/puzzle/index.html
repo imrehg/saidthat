@@ -20,7 +20,7 @@
   }
 
   function getSolution(guess) {
-     $.getJSON("/p{{puzzle.id}}/?solve", function(data) {
+     $.getJSON("/p{{puzzle.id}}/?solve&guess="+guess, function(data) {
      var solution = data['author'];
      var sol_id = "#"+solution;
      $(sol_id).css("opacity", "1.0");
@@ -40,6 +40,7 @@
     });
      $("#nextpuzzle").css("visibility", "visible");
      $("#shareme").css("visibility", "visible");
+     $("#stats").css("visibility", "visible");
      $(".profilelink").css("visibility", "visible");
   }
 
@@ -91,6 +92,7 @@
   <div id="buttons">
     <a href="/puzzle/" id="nextpuzzle" class="button green">Next quote</a>
     <a href="http://twitter.com/share?{{ share_me }}" id="shareme" class="button blue" target="_blank">Share quote on Twitter</a> 
+    <a href="/stats/" id="stats" class="button rosy" target="_blank">Stats</a>
   </div>
 
 </center>
